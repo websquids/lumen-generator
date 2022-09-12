@@ -6,20 +6,20 @@ use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
-class SeederMakeCommand extends GeneratorCommand {
+class CSeederMakeCommand extends GeneratorCommand {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:custom_seeder';
+    protected $name = 'make:cseeder';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new custom seeder class';
+    protected $description = 'Create a new seeder class';
 
     /**
      * The type of class being generated.
@@ -75,7 +75,7 @@ class SeederMakeCommand extends GeneratorCommand {
      * @return string
      */
     protected function getPath($name) {
-        return $this->laravel->basePath('database') . '/seeds/' . $name . '.php';
+        return $this->laravel->basePath('database') . '/seeders/' . $name . '.php';
     }
 
     /**
@@ -87,8 +87,9 @@ class SeederMakeCommand extends GeneratorCommand {
      * @return string
      */
     protected function buildClass($name) {
+        $modelName = str_replace('Seeder', '', lcfirst(class_basename($name)));
         $replace = [
-            'DummyPluralModelVariable' => Str::plural(lcfirst(class_basename($name))),
+            'DummyPluralModelVariable' => Str::plural($modelName),
         ];
 
         return str_replace(

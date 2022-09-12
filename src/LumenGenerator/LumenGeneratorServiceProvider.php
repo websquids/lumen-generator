@@ -5,8 +5,7 @@ namespace Websquids\LumenGenerator;
 use Illuminate\Support\Composer;
 use Illuminate\Support\ServiceProvider;
 
-class LumenGeneratorServiceProvider extends ServiceProvider
-{
+class LumenGeneratorServiceProvider extends ServiceProvider {
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -34,6 +33,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
+        'CSeederMake' => 'command.cseeder.make',
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'EventMake' => 'command.event.make',
@@ -62,8 +62,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
-    {
+    public function register() {
         $this->registerCommands($this->commands);
         $this->registerCommands($this->devCommands);
     }
@@ -73,8 +72,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
      *
      * @param array $commands
      */
-    protected function registerCommands(array $commands)
-    {
+    protected function registerCommands(array $commands) {
         foreach (array_keys($commands) as $command) {
             $method = "register{$command}Command";
 
@@ -87,8 +85,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerRouteListCommand()
-    {
+    protected function registerRouteListCommand() {
         $this->app->singleton('command.route.list', function ($app) {
             return new Console\RouteListCommand();
         });
@@ -97,8 +94,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerTinkerCommand()
-    {
+    protected function registerTinkerCommand() {
         $this->app->singleton('command.tinker', function ($app) {
             return new Console\TinkerCommand();
         });
@@ -107,8 +103,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerClearCompiledCommand()
-    {
+    protected function registerClearCompiledCommand() {
         $this->app->singleton('command.clear.compiled', function ($app) {
             return new Console\ClearCompiledCommand();
         });
@@ -117,12 +112,11 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerOptimizeCommand()
-    {
+    protected function registerOptimizeCommand() {
         $this->app->singleton('command.optimize', function ($app) {
             $app->configure('compile');
 
-            $app['config']->set('optimizer', require_once(__DIR__.'/config/optimizer.php'));
+            $app['config']->set('optimizer', require_once(__DIR__ . '/config/optimizer.php'));
 
             return new Console\OptimizeCommand(new Composer($app['files']));
         });
@@ -131,8 +125,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerConsoleMakeCommand()
-    {
+    protected function registerConsoleMakeCommand() {
         $this->app->singleton('command.console.make', function ($app) {
             return new Console\ConsoleMakeCommand($app['files']);
         });
@@ -141,8 +134,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerControllerMakeCommand()
-    {
+    protected function registerControllerMakeCommand() {
         $this->app->singleton('command.controller.make', function ($app) {
             return new Console\ControllerMakeCommand($app['files']);
         });
@@ -151,8 +143,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerEventMakeCommand()
-    {
+    protected function registerEventMakeCommand() {
         $this->app->singleton('command.event.make', function ($app) {
             return new Console\EventMakeCommand($app['files']);
         });
@@ -161,8 +152,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerExceptionMakeCommand()
-    {
+    protected function registerExceptionMakeCommand() {
         $this->app->singleton('command.exception.make', function ($app) {
             return new Console\ExceptionMakeCommand($app['files']);
         });
@@ -171,8 +161,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerFactoryMakeCommand()
-    {
+    protected function registerFactoryMakeCommand() {
         $this->app->singleton('command.factory.make', function ($app) {
             return new Console\FactoryMakeCommand($app['files']);
         });
@@ -181,8 +170,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerJobMakeCommand()
-    {
+    protected function registerJobMakeCommand() {
         $this->app->singleton('command.job.make', function ($app) {
             return new Console\JobMakeCommand($app['files']);
         });
@@ -191,8 +179,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerKeyGenerateCommand()
-    {
+    protected function registerKeyGenerateCommand() {
         $this->app->singleton('command.key.generate', function () {
             return new Console\KeyGenerateCommand();
         });
@@ -201,8 +188,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerListenerMakeCommand()
-    {
+    protected function registerListenerMakeCommand() {
         $this->app->singleton('command.listener.make', function ($app) {
             return new Console\ListenerMakeCommand($app['files']);
         });
@@ -211,8 +197,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerMailMakeCommand()
-    {
+    protected function registerMailMakeCommand() {
         $this->app->singleton('command.mail.make', function ($app) {
             return new Console\MailMakeCommand($app['files']);
         });
@@ -221,8 +206,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerMiddlewareMakeCommand()
-    {
+    protected function registerMiddlewareMakeCommand() {
         $this->app->singleton('command.middleware.make', function ($app) {
             return new Console\MiddlewareMakeCommand($app['files']);
         });
@@ -231,8 +215,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerRequestMakeCommand()
-    {
+    protected function registerRequestMakeCommand() {
         $this->app->singleton('command.request.make', function ($app) {
             return new Console\RequestMakeCommand($app['files']);
         });
@@ -241,8 +224,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerPipeMakeCommand()
-    {
+    protected function registerPipeMakeCommand() {
         $this->app->singleton('command.pipe.make', function ($app) {
             return new Console\PipeMakeCommand($app['files']);
         });
@@ -251,8 +233,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerModelMakeCommand()
-    {
+    protected function registerModelMakeCommand() {
         $this->app->singleton('command.model.make', function ($app) {
             return new Console\ModelMakeCommand($app['files']);
         });
@@ -261,8 +242,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerProviderMakeCommand()
-    {
+    protected function registerProviderMakeCommand() {
         $this->app->singleton('command.provider.make', function ($app) {
             return new Console\ProviderMakeCommand($app['files']);
         });
@@ -271,18 +251,16 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerSeederMakeCommand()
-    {
-        $this->app->singleton('command.custom_seeder.make', function ($app) {
-            return new Console\SeederMakeCommand($app['files']);
+    protected function registerCSeederMakeCommand() {
+        $this->app->singleton('command.cseeder.make', function ($app) {
+            return new Console\CSeederMakeCommand($app['files'], $app['composer']);
         });
     }
 
     /**
      * Register the command.
      */
-    protected function registerServeCommand()
-    {
+    protected function registerServeCommand() {
         $this->app->singleton('command.serve', function () {
             return new Console\ServeCommand();
         });
@@ -291,8 +269,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerTestMakeCommand()
-    {
+    protected function registerTestMakeCommand() {
         $this->app->singleton('command.test.make', function ($app) {
             return new Console\TestMakeCommand($app['files']);
         });
@@ -301,8 +278,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerResourceMakeCommand()
-    {
+    protected function registerResourceMakeCommand() {
         $this->app->singleton('command.resource.make', function ($app) {
             return new Console\ResourceMakeCommand($app['files']);
         });
@@ -311,8 +287,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerPolicyMakeCommand()
-    {
+    protected function registerPolicyMakeCommand() {
         $this->app->singleton('command.policy.make', function ($app) {
             return new Console\PolicyMakeCommand($app['files']);
         });
@@ -321,8 +296,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerNotificationTableCommand()
-    {
+    protected function registerNotificationTableCommand() {
         $this->app->singleton('command.notification.table', function ($app) {
             return new Console\NotificationTableCommand($app['files'], $app['composer']);
         });
@@ -331,8 +305,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerNotificationMakeCommand()
-    {
+    protected function registerNotificationMakeCommand() {
         $this->app->singleton('command.notification.make', function ($app) {
             return new Console\NotificationMakeCommand($app['files']);
         });
@@ -341,8 +314,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerChannelMakeCommand()
-    {
+    protected function registerChannelMakeCommand() {
         $this->app->singleton('command.channel.make', function ($app) {
             return new Console\ChannelMakeCommand($app['files']);
         });
@@ -351,29 +323,25 @@ class LumenGeneratorServiceProvider extends ServiceProvider
     /**
      * Register the command.
      */
-    protected function registerSchemaDumpCommand()
-    {
+    protected function registerSchemaDumpCommand() {
         $this->app->singleton('command.schema.dump', function () {
             return new Console\DumpCommand();
         });
     }
 
-    protected function registerCastMakeCommand()
-    {
+    protected function registerCastMakeCommand() {
         $this->app->singleton('command.cast.make', function ($app) {
             return new Console\CastMakeCommand($app['files']);
         });
     }
 
-    protected function registerRuleMakeCommand()
-    {
+    protected function registerRuleMakeCommand() {
         $this->app->singleton('command.rule.make', function ($app) {
             return new Console\RuleMakeCommand($app['files']);
         });
     }
 
-    protected function registerObserverMakeCommand()
-    {
+    protected function registerObserverMakeCommand() {
         $this->app->singleton('command.observer.make', function ($app) {
             return new Console\ObserverMakeCommand($app['files']);
         });
@@ -384,8 +352,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
-    {
+    public function provides() {
         if ($this->app->environment('production')) {
             return array_values($this->commands);
         } else {

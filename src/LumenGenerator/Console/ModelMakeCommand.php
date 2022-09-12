@@ -103,7 +103,7 @@ class ModelMakeCommand extends GeneratorCommand {
     protected function createSeeder() {
         $seeder = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('make:seed', [
+        $this->call('make:cseed', [
             'name' => "{$seeder}Seeder",
         ]);
     }
