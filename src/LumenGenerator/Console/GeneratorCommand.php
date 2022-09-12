@@ -1,6 +1,6 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -73,7 +73,7 @@ abstract class GeneratorCommand extends Command
 
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
-        $this->info($this->type.' created successfully.');
+        $this->info($this->type.' created successfully!');
     }
 
     /**

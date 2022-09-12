@@ -2,64 +2,94 @@
 
 namespace DummyNamespace;
 
+use App\Http\Requests\DummyPluralModelName\DeleteDummyModelClass;
+use App\Http\Requests\DummyPluralModelName\GetDummyModelClassList;
+use App\Http\Requests\DummyPluralModelName\GetDummyModelClass;
+use App\Http\Requests\DummyPluralModelName\StoreDummyModelClass;
+use App\Http\Requests\DummyPluralModelName\UpdateDummyModelClass;
 use DummyFullModelClass;
 use DummyRootNamespaceHttp\Controllers\Controller;
-use Illuminate\Http\Request;
 
-class DummyClass extends Controller
-{
+/**
+* @group DummyPluralModelName
+*/
+class DummyClass extends Controller {
+    protected $lazyLoad = [];
+
     /**
-     * Display a listing of the resource.
+     * Create a new instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
-    {
-        //
+    public function __construct() {
+        $this->middleware('auth:admin', ['except' => []]);
+        $this->lazyLoad = [];
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the DummyPluralModelVariable.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(GetDummyModelClassList $request) {
+        $DummyPluralModelVariable = DummyModelClass::withTrashed($request->get('trashed', false))->get();
+        return $this->sendResponse($DummyPluralModelVariable->load($this->lazyLoad), 'Retrieved successfully');
+    }
+
+    /**
+     * Store a newly created DummyModelVariable in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(StoreDummyModelClass $request) {
+        $inputs = $request->validated();
+        $DummyModelVariable = DummyModelClass::create($inputs);
+        return $this->sendResponse($DummyModelVariable->load($this->lazyLoad), 'Stored successfully');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified DummyModelVariable.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \App\Models\DummyModelClass  $DummyPluralModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function show(DummyModelClass $DummyModelVariable)
-    {
-        //
+    public function show(GetDummyModelClass $request, $id) {
+        $DummyModelVariable = DummyModelClass::findOrFail($id);
+        return $this->sendResponse($DummyModelVariable->load($this->lazyLoad), 'Retrieved successfully');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified DummyModelVariable in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \App\Models\DummyModelClass  $DummyPluralModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DummyModelClass $DummyModelVariable)
-    {
-        //
+    public function update(UpdateDummyModelClass $request, $id) {
+        $DummyModelVariable = DummyModelClass::withTrashed()->findOrFail($id);
+        if ($request->get('restore', false)) {
+            $DummyModelVariable->restore();
+        } else {
+            $inputs = $request->validated();
+            $DummyModelVariable->update($inputs);
+        }
+        return $this->sendResponse($DummyModelVariable->load($this->lazyLoad), 'Updated successfully');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified DummyModelVariable from storage.
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \App\Models\DummyModelClass  $DummyPluralModelVariable
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DummyModelClass $DummyModelVariable)
-    {
-        //
+    public function destroy(DeleteDummyModelClass $request, $id) {
+        $DummyModelVariable = DummyModelClass::withTrashed()->findOrFail($id);
+        if ($request->get('force', false)) {
+            $DummyModelVariable->forceDelete();
+        } else {
+            $DummyModelVariable->delete();
+        }
+        return $this->sendResponse($DummyModelVariable, 'Deleted successfully');
     }
 }

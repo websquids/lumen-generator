@@ -1,12 +1,11 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
-class ModelMakeCommand extends GeneratorCommand
-{
+class ModelMakeCommand extends GeneratorCommand {
     /**
      * The console command name.
      *
@@ -33,9 +32,8 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    public function handle()
-    {
-        if (parent::handle() === false && ! $this->option('force')) {
+    public function handle() {
+        if (parent::handle() === false && !$this->option('force')) {
             return false;
         }
 
@@ -45,6 +43,7 @@ class ModelMakeCommand extends GeneratorCommand
             $this->input->setOption('migration', true);
             $this->input->setOption('controller', true);
             $this->input->setOption('resource', true);
+            $this->createRequests();
         }
 
         if ($this->option('factory')) {
@@ -69,8 +68,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createFactory()
-    {
+    protected function createFactory() {
         $factory = Str::studly(class_basename($this->argument('name')));
 
         $this->call('make:factory', [
@@ -84,8 +82,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createMigration()
-    {
+    protected function createMigration() {
         $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
 
         if ($this->option('pivot')) {
@@ -103,8 +100,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createSeeder()
-    {
+    protected function createSeeder() {
         $seeder = Str::studly(class_basename($this->argument('name')));
 
         $this->call('make:seed', [
@@ -117,8 +113,29 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createController()
-    {
+    protected function createRequests() {
+        $modelName = $this->getNameInput();
+        $pluralName = Str::plural($modelName);
+        $requests = [
+            "Get{$modelName}List",
+            "Store{$modelName}",
+            "Update{$modelName}",
+            "Delete{$modelName}",
+        ];
+
+        foreach ($requests as $req) {
+            $this->call('make:request', [
+                'name' => "{$pluralName}/{$req}"
+            ]);
+        }
+    }
+
+    /**
+     * Create a controller for the model.
+     *
+     * @return void
+     */
+    protected function createController() {
         $controller = Str::studly(class_basename($this->argument('name')));
 
         $modelName = $this->qualifyClass($this->getNameInput());
@@ -135,8 +152,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getStub()
-    {
+    protected function getStub() {
         $stub = $this->option('pivot')
             ? '/stubs/model.pivot.stub'
             : '/stubs/model.stub';
@@ -151,10 +167,9 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
-    {
+    protected function getDefaultNamespace($rootNamespace) {
         return is_dir($this->laravel->basePath('app/Models'))
-            ? $rootNamespace.'\\Models'
+            ? $rootNamespace . '\\Models'
             : $rootNamespace;
     }
 
@@ -163,8 +178,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return array
      */
-    protected function getOptions()
-    {
+    protected function getOptions() {
         return [
             ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, and resource controller for the model'],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],

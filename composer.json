@@ -1,5 +1,5 @@
 {
-    "name": "flipbox/lumen-generator",
+    "name": "websquids/lumen-generator",
     "description": "A Lumen Generator You Are Missing",
     "type": "library",
     "require": {
@@ -19,7 +19,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Flipbox\\LumenGenerator\\": "src/LumenGenerator/"
+            "Websquids\\LumenGenerator\\": "src/LumenGenerator/"
         }
     },
     "suggest": {

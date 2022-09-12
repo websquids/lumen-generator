@@ -1,6 +1,6 @@
 <?php
 
-namespace Flipbox\LumenGenerator;
+namespace Websquids\LumenGenerator;
 
 use Illuminate\Support\Composer;
 use Illuminate\Support\ServiceProvider;
@@ -273,7 +273,7 @@ class LumenGeneratorServiceProvider extends ServiceProvider
      */
     protected function registerSeederMakeCommand()
     {
-        $this->app->singleton('command.seeder.make', function ($app) {
+        $this->app->singleton('command.custom_seeder.make', function ($app) {
             return new Console\SeederMakeCommand($app['files']);
         });
     }

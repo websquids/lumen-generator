@@ -1,6 +1,6 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;

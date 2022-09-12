@@ -1,6 +1,6 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -141,6 +141,8 @@ class ControllerMakeCommand extends GeneratorCommand
             'DummyFullModelClass' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
+            'DummyPluralModelVariable' => Str::plural(lcfirst(class_basename($modelClass))),
+            'DummyPluralModelName' => Str::plural(class_basename($modelClass)),
         ]);
     }
 

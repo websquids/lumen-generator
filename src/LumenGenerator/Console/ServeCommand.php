@@ -1,6 +1,6 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\ProcessUtils;

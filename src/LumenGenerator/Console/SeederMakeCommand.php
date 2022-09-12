@@ -1,25 +1,25 @@
 <?php
 
-namespace Flipbox\LumenGenerator\Console;
+namespace Websquids\LumenGenerator\Console;
 
 use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
-class SeederMakeCommand extends GeneratorCommand
-{
+class SeederMakeCommand extends GeneratorCommand {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:seeder';
+    protected $name = 'make:custom_seeder';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new seeder class';
+    protected $description = 'Create a new custom seeder class';
 
     /**
      * The type of class being generated.
@@ -42,8 +42,7 @@ class SeederMakeCommand extends GeneratorCommand
      * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
-    public function __construct(Filesystem $files, Composer $composer)
-    {
+    public function __construct(Filesystem $files, Composer $composer) {
         parent::__construct($files);
 
         $this->composer = $composer;
@@ -54,8 +53,7 @@ class SeederMakeCommand extends GeneratorCommand
      *
      * @return void
      */
-    public function handle()
-    {
+    public function handle() {
         parent::handle();
 
         $this->composer->dumpAutoloads();
@@ -66,9 +64,8 @@ class SeederMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getStub()
-    {
-        return __DIR__.'/stubs/seeder.stub';
+    protected function getStub() {
+        return __DIR__ . '/stubs/seeder.stub';
     }
 
     /**
@@ -77,9 +74,28 @@ class SeederMakeCommand extends GeneratorCommand
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name)
-    {
-        return $this->laravel->basePath('database').'/seeds/'.$name.'.php';
+    protected function getPath($name) {
+        return $this->laravel->basePath('database') . '/seeds/' . $name . '.php';
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * Remove the base controller import if we are already in base namespace.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass($name) {
+        $replace = [
+            'DummyPluralModelVariable' => Str::plural(lcfirst(class_basename($name))),
+        ];
+
+        return str_replace(
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
+        );
     }
 
     /**
@@ -88,8 +104,7 @@ class SeederMakeCommand extends GeneratorCommand
      * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name)
-    {
+    protected function qualifyClass($name) {
         return $name;
     }
 }
